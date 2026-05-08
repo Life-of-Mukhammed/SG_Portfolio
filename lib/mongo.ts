@@ -1,11 +1,5 @@
 import { MongoClient, type Db } from "mongodb";
 
-const uri = process.env.MONGODB_URI;
-
-if (!uri) {
-  throw new Error("MONGODB_URI is not set");
-}
-
 declare global {
   // eslint-disable-next-line no-var
   var __mongoClient: MongoClient | undefined;
@@ -14,8 +8,12 @@ declare global {
 }
 
 function client(): MongoClient {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    throw new Error("MONGODB_URI is not set");
+  }
   if (!global.__mongoClient) {
-    global.__mongoClient = new MongoClient(uri!, {
+    global.__mongoClient = new MongoClient(uri, {
       serverSelectionTimeoutMS: 8000,
     });
   }
