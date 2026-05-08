@@ -4,7 +4,7 @@ import { PortfolioStats } from "@/components/portfolio/PortfolioStats";
 import { PortfolioCTA } from "@/components/portfolio/PortfolioCTA";
 import { ProjectGrid } from "@/components/project/ProjectGrid";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const rows = await prisma.project.findMany({

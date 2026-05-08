@@ -24,7 +24,7 @@ import { formatCurrency } from "@/lib/utils";
 import { ProjectCardStandard } from "@/components/project/ProjectCardStandard";
 import type { Project } from "@/lib/types";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,
