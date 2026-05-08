@@ -1,0 +1,178 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg: 0 0% 100%;
+    --surface: 0 0% 100%;
+    --elevated: 250 50% 98%;
+    --border: 250 18% 91%;
+    --ring: 252 88% 60%;
+    --fg: 250 35% 12%;
+    --muted: 250 12% 38%;
+    --subtle: 250 10% 60%;
+
+    /* Deep saturated brand purple matching the Startup Garage block */
+    --brand: 252 84% 58%;
+    --brand-fg: 0 0% 100%;
+    --brand-deep: 252 70% 42%;
+    --accent: 252 100% 75%;
+    --accent-fg: 252 70% 16%;
+
+    --success: 152 60% 38%;
+    --warning: 38 92% 50%;
+    --danger: 358 75% 55%;
+  }
+
+  .dark {
+    --bg: 252 25% 6%;
+    --surface: 252 22% 9%;
+    --elevated: 252 22% 12%;
+    --border: 252 14% 18%;
+    --ring: 252 92% 72%;
+    --fg: 0 0% 98%;
+    --muted: 252 10% 72%;
+    --subtle: 252 10% 50%;
+
+    --brand: 252 92% 72%;
+    --brand-fg: 252 25% 8%;
+    --brand-deep: 252 80% 60%;
+    --accent: 252 100% 82%;
+    --accent-fg: 252 25% 8%;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    @apply bg-bg text-fg;
+    font-feature-settings: "ss01", "cv11", "cv05";
+  }
+
+  ::selection {
+    background: hsl(var(--brand) / 0.25);
+  }
+
+  *,
+  ::before,
+  ::after {
+    border-color: hsl(var(--border));
+  }
+
+  /* Smooth theme transitions on color/background only — never on transforms */
+  html.theme-transition,
+  html.theme-transition *,
+  html.theme-transition *::before,
+  html.theme-transition *::after {
+    transition:
+      background-color 350ms cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 350ms cubic-bezier(0.22, 1, 0.36, 1),
+      color 350ms cubic-bezier(0.22, 1, 0.36, 1),
+      fill 350ms cubic-bezier(0.22, 1, 0.36, 1),
+      stroke 350ms cubic-bezier(0.22, 1, 0.36, 1) !important;
+  }
+}
+
+@layer components {
+  .glass {
+    @apply bg-surface/70 backdrop-blur-xl backdrop-saturate-150;
+  }
+
+  .surface-card {
+    @apply bg-surface border border-border;
+    box-shadow: 0 1px 2px 0 rgb(15 23 42 / 0.04),
+      0 6px 24px -8px rgb(15 23 42 / 0.06);
+  }
+
+  .dark .surface-card {
+    box-shadow: 0 1px 0 0 rgb(255 255 255 / 0.04) inset,
+      0 8px 32px -12px rgb(0 0 0 / 0.6);
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(
+      135deg,
+      hsl(var(--brand)) 0%,
+      hsl(var(--accent)) 100%
+    );
+  }
+
+  .gradient-border {
+    position: relative;
+    background-clip: padding-box;
+  }
+  .gradient-border::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--brand) / 0.6),
+      hsl(var(--accent) / 0.6) 50%,
+      hsl(var(--brand) / 0.2)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .glow-spot {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(64px);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  .dark .glow-spot {
+    opacity: 0.5;
+  }
+
+  /* Subtle dot grid for hero */
+  .bg-dots {
+    background-image: radial-gradient(
+      hsl(var(--fg) / 0.07) 1px,
+      transparent 1px
+    );
+    background-size: 22px 22px;
+  }
+  .dark .bg-dots {
+    background-image: radial-gradient(
+      hsl(var(--fg) / 0.08) 1px,
+      transparent 1px
+    );
+  }
+
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .scroll-reveal.in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+}

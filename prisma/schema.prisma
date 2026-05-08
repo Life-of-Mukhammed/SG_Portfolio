@@ -1,0 +1,65 @@
+// SQLite for dev; swap provider to "postgresql" + DATABASE_URL for production.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("USER") // ADMIN | USER
+  createdAt    DateTime @default(now())
+}
+
+model Project {
+  id            String   @id @default(cuid())
+  externalId    String?  @unique // MongoDB _id (when synced from residents)
+  slug          String   @unique
+  name          String
+  tagline       String   @default("")
+  description   String
+  logoUrl       String?
+  coverUrl      String?
+  category      String
+  // SQLite has no array type — store as JSON-encoded strings.
+  tags          String   @default("[]")
+  status        String   @default("MVP") // MVP | GROWTH | SCALE
+  funding       Int      @default(0)
+  websiteUrl    String?
+  linkedinUrl   String?
+  screenshots   String   @default("[]")
+  techStack     String   @default("[]")
+  founderName   String
+  founderAvatar String?
+  usersCount    Int      @default(0)
+  revenue       Int      @default(0)
+  growthRate    Float    @default(0)
+  featured      Boolean  @default(false)
+  accentColor   String   @default("#6E56CF")
+  // Resident-specific (synced from MongoDB)
+  founderPhone    String?
+  founderEmail    String?
+  founderTelegram String?
+  founderRole     String?  // e.g. "CEO & Founder"
+  founderBio      String?  // About / experience long text
+  founderSkills   String   @default("[]") // JSON array of skills
+  region          String?
+  teamSize        Int?
+  commitment      String?
+  pitchDeckUrl    String?
+  resumeUrl       String?
+  acceptedAt      DateTime?
+  qa              String   @default("[]") // JSON array of {question, answer}
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@index([category])
+  @@index([status])
+  @@index([featured])
+}
